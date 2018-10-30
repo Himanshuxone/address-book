@@ -31,13 +31,13 @@ docker build -t address-book .
 Run the container from the image to run server.
 
 ```
-docker run --publish 6060:8080 --name address-book --rm address-book
+docker run --publish 8080:8080 --name address-book --rm address-book
 ```
 
 Hit the endpoint to fetch the data on basis of firstname as variable endpoint as:
 
 ```
-http://localhost:6060/bob
+http://localhost:8080/bob
 ```
 ### Output
 
