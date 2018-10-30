@@ -1,48 +1,48 @@
-# Infoblox Assignment
+# Address Book
 
-Parse csv file and api to return contact detailks of the name passed in the URL parameter
+Parse csv file and api to return contact details of the name passed in the variable endpoint
 
 ## Getting Started
 
-Server will listen on post :8080 with firstname as the endpoint for showing the contact details
+Server will listen on port :8080 with firstname as the endpoint for showing the contact details
 ```
 http://localhost:8080/{firstname}
 ```
 
 ### Prerequisites
 
-You need to install docker to create an image from the Dockerfile in the respository
+Install docker to create an image from the Dockerfile in the respository
 
 ```
-docker build -t infoblox .
+docker build -t address-book .
 ```
 
 ### Installing
 
-The project will create an api which will use gorilla mux for routing, tealeg/xlsx to read xlsx files
+The project will create an api which will use gorilla mux for routing, encoding/csv to read csv file
 and dep tool for dependency management.
 
 Create docker image from dockerfile
 
 ```
-docker build -t infoblox .
+docker build -t address-book .
 ```
 
 Run the container from the image to run server.
 
 ```
-docker run --publish 6060:8080 --name infoblox --rm infoblox
+docker run --publish 6060:8080 --name address-book --rm address-book
 ```
 
-Hit the endpoint to fetch the data on basis of key argument as:
+Hit the endpoint to fetch the data on basis of firstname as variable endpoint as:
 
 ```
-http://localhost:6060/one
+http://localhost:6060/bob
 ```
 ### Output
 
 ```
-[{"key":"one","value":1}]
+[{"firstname":"BOb","lastname":"Williams","address":{"street":"234 2nd Ave.","city":"Tacoma","state":"WA"},"code":26}]
 ```
 
 ## Built With
@@ -52,5 +52,5 @@ http://localhost:6060/one
 
 ## Authors
 
-* **Himanshu Chaudhary** - *Initial work* - [Infoblox-Assignment](https://github.com/Himanshuxone/infoblox-assigment)
+* **Himanshu Chaudhary** - *Initial work* - [Address-Book](https://github.com/Himanshuxone/address-book)
 
