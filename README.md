@@ -1,6 +1,6 @@
 # Address Book
 
-Parse csv file and api to return contact details of the name passed in the variable endpoint
+CSV file parser and an Api to return contact details of the name passed in the variable endpoint
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ Install docker to create an image from the Dockerfile in the respository
 The project will create an api which will use gorilla mux for routing, encoding/csv to read csv file
 and dep tool for dependency management.
 
-Create docker image from dockerfile
+Create a docker image from dockerfile as:
 
 ```
 docker build -t address-book .
