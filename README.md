@@ -13,10 +13,6 @@ http://localhost:8080/{firstname}
 
 Install docker to create an image from the Dockerfile in the respository
 
-```
-docker build -t address-book .
-```
-
 ### Installing
 
 The project will create an api which will use gorilla mux for routing, encoding/csv to read csv file
@@ -34,7 +30,7 @@ Run the container from the image to run server.
 docker run --publish 8080:8080 --name address-book --rm address-book
 ```
 
-Hit the endpoint to fetch the data on basis of firstname as variable endpoint as:
+Hit below url to fetch the data on basis of firstname as variable endpoint as:
 
 ```
 http://localhost:8080/bob

@@ -1,4 +1,4 @@
-// package used to process csv and string the result in the structs
+// Package parsecsv used to process csv and string the result in the structs
 package parsecsv
 
 import (
@@ -41,7 +41,7 @@ var (
 	response []*Result
 )
 
-// This function is an implementation of read method to parse the file and remove unwanted chaarcters inside the
+// This function is an implementation of read method to parse the file and remove unwanted characters inside
 // csv file if found
 func (read *readCSV) Read(b []byte) (n int, err error) {
 	x := make([]byte, len(b))
@@ -57,11 +57,12 @@ func (read *readCSV) Read(b []byte) (n int, err error) {
 	}
 
 	processedString := reg.ReplaceAllString(string(x), "")
-	copy(b, []byte(processedString)) // copy the processed string to the main bytes which will be read by csv reader
+	// fmt.Println("processed string:", processedString)
+	copy(b, []byte(processedString)) // copy the processed string
 	return n, nil
 }
 
-// Search is used to find contact information of the variable url parameter(firstname).
+// Search is used to find contact information of the variable url parameter(firstname): http://localhost:8080/bob
 func Search(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	var res []*Result
@@ -88,23 +89,27 @@ func ProcessCSV() {
 	CheckError(err)
 	reader := &readCSV{file}
 	wg.Add(1)
+
 	go func() {
 		defer wg.Done()
 		csvReader := csv.NewReader(reader)
-		csvReader.LazyQuotes = true
 		csvReader.Comma = ','
 		csvReader.Comment = '#'
 		csvReader.TrimLeadingSpace = true
+		csvReader.FieldsPerRecord = -1 // If you want to allow a variable number of fields per record, set r.FieldsPerRecord = -1.
 
 		// Since the file does not contains any header we might ignore the process to read first line as header
+		// Though It might be better to provide the header information to count the number of columns possible
 		// if _, err := r.Read(); err != nil { //read header
 		//     log.Fatal(err)
 		// }
-
 		// read csv one line at a time and store the data inside result struct at the same time
+
 		for {
-			rec, err := csvReader.Read() // It is better to read the lines one by one else in case of large csv it will
+			// It is better to read the lines one by one else in case of large csv it will
 			// create problem when we readAll to the memory and then range over the lines.
+			rec, err := csvReader.Read()
+
 			if err != nil {
 				if err == io.EOF {
 					break
@@ -115,7 +120,7 @@ func ProcessCSV() {
 				}
 			}
 
-			// This will check if teh length of the records slice is more than 5
+			// This will check if the length of the records slice is more than 5
 			// As their are 6 columns
 			if len(rec) > 5 {
 				code, _ := strconv.ParseFloat(strings.TrimSpace(rec[5]), 64)
@@ -134,10 +139,10 @@ func ProcessCSV() {
 	}()
 
 	// wait for the go routine to finish so that the file open for reading can be closed before parent exists
-	// Else when running benchmark on the current function will take too much time and open too many files
-	// Also one think can be check which is ulimit -a to see the resources limit in ubuntu
+	// else when running benchmark on the current function will take too much time and open too many files
+	// We can check which for ulimit -a in terminal to see the resources limit inside ubuntu when running benchmark
+	// which will open same file multiple times
 	wg.Wait()
-	log.Println("Process Completed")
 }
 
 // CheckError is used to log error information inside the logs.txt

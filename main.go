@@ -2,8 +2,9 @@
 package main
 
 import (
+	"app/parsecsv"
+	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/infoblox/parsecsv"
 	"log"
 	"net/http"
 	"os"
@@ -20,5 +21,6 @@ func main() {
 	// pass a string name to find the contact information using Search handler
 	r.HandleFunc("/{firstname}", parsecsv.Search).Methods("GET")
 	http.Handle("/", r)
+	fmt.Println("Listen to server on port 8080")
 	http.ListenAndServe(":8080", nil)
 }
